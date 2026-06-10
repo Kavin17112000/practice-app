@@ -31,6 +31,17 @@ jobs:
         run: |
           ls -la frontend
           ls -la frontend/dist
+      - name: Prepare Server Directories
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo mkdir -p /var/www/html
+            sudo mkdir -p /opt/backend
+            sudo chown ${{ secrets.VM_USER }}:${{ secrets.VM_USER }} /var/www/html
+            sudo chown ${{ secrets.VM_USER }}:${{ secrets.VM_USER }} /opt/backend
 
       # Copy Frontend Files
       - name: Deploy Frontend
